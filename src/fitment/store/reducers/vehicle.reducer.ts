@@ -1,52 +1,108 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 // HOW TO SET UP A reducer.ts FILE:
 // Import actions and interfaces
 // Create interface for initial state
 // Create initial state
-// Create reducer function and pass in initial state and actions. 
+// Create reducer function and pass in initial state and actions.
 // Return new state
 
 import * as fromVehicle from '../actions/vehicle.action';
 
 export interface VehicleState {
-  years: string[],
-  loaded: boolean,
-  loading: boolean
+  years: string[];
+  makes: string[];
+  models: string[];
+  trims: string[];
 }
 
 export const initialState: VehicleState = {
   years: [],
-  loaded: false,
-  loading: false
-}
+  makes: [],
+  models: [],
+  trims: []
+};
 
 export function reducer(
   state = initialState,
   action: fromVehicle.VehicleAction
 ): VehicleState {
-
-  switch(action.type){
-
-    case fromVehicle.LOAD_YEARS: {
+  switch (action.type) {
+    case fromVehicle.ActionTypes.LOAD_YEARS: {
       return {
-        ...state,
-        loading: true
-      }
+        ...state
+      };
     }
-    case fromVehicle.LOAD_YEARS_FAIL: {
+    case fromVehicle.ActionTypes.LOAD_YEARS_FAIL: {
       return {
         ...state,
-        loaded: false,
-        loading: false
-      }
+        ...action.payload
+      };
     }
-    case fromVehicle.LOAD_YEARS_SUCCESS: {
+    case fromVehicle.ActionTypes.LOAD_YEARS_SUCCESS: {
       return {
         ...state,
-        loaded: true,
-        loading: false
-      }
+        ...action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_MAKES: {
+      return {
+        ...state
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_MAKES_FAIL: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_MAKES_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_MODELS: {
+      return {
+        ...state
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_MODELS_FAIL: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_MODELS_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_TRIMS: {
+      return {
+        ...state
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_TRIMS_FAIL: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.LOAD_TRIMS_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload
+      };
     }
   }
 
   return state;
 }
+
+export const getFitmentState = createFeatureSelector<VehicleState>('fitment');
+
+export const getVehicleState = createSelector(
+  getFitmentState,
+  state => state
+);
