@@ -103,4 +103,5 @@ export type VehicleAction =
   | LoadMODELSSuccess
   | LoadTRIMS
   | LoadTRIMSFail
-  | LoadTRIMSSuccess | SelectedYear | SelectedMake |SelectedModel;
+  | LoadTRIMSSuccess
+  | SelectedYear | SelectedMake |SelectedModel;

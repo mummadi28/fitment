@@ -28,6 +28,10 @@ export const initialState: VehicleState = {
   selectedModel: ''
 };
 
+export const getStoreState=createFeatureSelector<VehicleState>('fitment');
+
+export const getState = createSelector(getStoreState,state=>state);
+
 export function reducer(
   state = initialState,
   action: fromVehicle.VehicleAction
@@ -126,9 +130,4 @@ export function reducer(
   return state;
 }
 
-export const getFitmentState = createFeatureSelector<VehicleState>('fitment');
 
-export const getVehicleState = createSelector(
-  getFitmentState,
-  state => state
-);

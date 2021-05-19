@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+.head-container {
+  display: grid;
+  grid-column-gap: 50px;
+  grid-template-columns: auto auto auto auto;
+  background-color: #2196f3;
+  padding: 10px;
+  border-bottom: 2px solid white;
+}
+
+.head-item {
+  padding: 2px;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+}
+
+.body-container {
+  display: grid;
+  grid-column-gap: 50px;
+  grid-template-columns: auto auto auto auto;
+  background-color: #92cbfa;
+  padding: 10px;
+}
+
+.body-item {
+  padding: 2px;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+}
+
+.highlight {
+  color: black;
+}

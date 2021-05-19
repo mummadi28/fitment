@@ -1,15 +1,33 @@
 <button (click)="getYears()"> Select vehicle </button>
-<div *ngFor="let yr of years$">
-  <span (click)="getMake(yr)"> {{yr}} </span>
-</div>
-<div *ngFor="let make of makes$">
-  <span (click)="getModel(make)"> {{make}} </span>
-</div>
 
-<div *ngFor="let model of models$">
-  <span (click)="getTrims(model)"> {{model}} </span>
-</div>
 
-<div *ngFor="let trim of trims$">
-  <span> {{trim}} </span>
+<div *ngIf="showData" class="container">
+  <div class="head-container">
+    <div [ngClass]="years$ && years$.length>0 ? 'highlight':''" class="head-item" (click)="getYears()">Year</div>
+    <div [ngClass]="makes$ && makes$.length>0 ? 'highlight':''" class="head-item">Make</div>
+    <div [ngClass]="models$ &&models$.length>0 ? 'highlight':''" class="head-item">Model</div>
+    <div [ngClass]="trims$ &&trims$.length>0 ? 'highlight':''" class="head-item">Trim</div>
+
+
+  </div>
+  <div class="body-container">
+
+    <div class="body-item" *ngFor="let yr of years$">
+      <span (click)="getMake(yr)"> {{yr}} </span>
+    </div>
+    <div class="body-item" *ngFor="let make of makes$">
+      <span (click)="getModel(make)"> {{make}} </span>
+    </div>
+
+    <div class="body-item" *ngFor="let model of models$">
+      <span (click)="getTrims(model)"> {{model}} </span>
+    </div>
+
+    <div class="body-item" *ngFor="let trim of trims$">
+      <span> {{trim}} </span>
+    </div>
+
+
+  </div>
+
 </div>

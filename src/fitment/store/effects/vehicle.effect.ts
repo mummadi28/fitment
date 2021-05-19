@@ -14,16 +14,15 @@ export class VehicleEffects {
     private store$: Store
   ) {}
 
-  @Effect() loadYears$ = this.actions$.pipe(
+  @Effect() loadFitmentYears = this.actions$.pipe(
     ofType(VehicleAction.ActionTypes.LOAD_YEARS),
     mergeMap(() =>
       this.service
         .getData('https://6080be3273292b0017cdbf2a.mockapi.io/years', null)
         .pipe(
-          map((data: any) => {
-            console.log('res effect', data);
+          map((res: any) => {
             return new VehicleAction.LoadYearsSuccess({
-              years: data.year,
+              years: res.year,
               models: null,
               makes: null,
               trims: null,
@@ -37,7 +36,7 @@ export class VehicleEffects {
     )
   );
 
-  @Effect() loadMakes$ = this.actions$.pipe(
+  @Effect() loadFitmentMakes = this.actions$.pipe(
     ofType(VehicleAction.ActionTypes.LOAD_MAKES),
     withLatestFrom(this.store$.select(state => state)),
     mergeMap(([action, vehicle]) =>
@@ -47,11 +46,11 @@ export class VehicleEffects {
           value: action['payload']
         }])
         .pipe(
-          map((data: any) => {
+          map((res: any) => {
             return new VehicleAction.LoadMAKESSuccess({
               years: null,
               models: null,
-              makes: data.make,
+              makes: res.make,
               trims: null,
               selectedYear: action['payload'],
               selectedMake:'',
@@ -64,7 +63,7 @@ export class VehicleEffects {
     )
   );
 
-  @Effect() loadModels$ = this.actions$.pipe(
+  @Effect() loadFitmentModels = this.actions$.pipe(
     ofType(VehicleAction.ActionTypes.LOAD_MODELS),
     withLatestFrom(this.store$.select(state => state)),
     mergeMap(([action, vehicle]) =>
@@ -75,12 +74,10 @@ export class VehicleEffects {
         }, {key: 'year',
           value: vehicle['fitment']['vehicle']['selectedYear']}])
         .pipe(
-          map((data: any) => {
-            console.log('vehicle', vehicle);
-            console.log('action', action);
+          map((res: any) => {
             return new VehicleAction.LoadMODELSSuccess({
               years: null,
-              models: data.model,
+              models: res.model,
               makes: null,
               trims: null,
               selectedYear: vehicle['fitment']['vehicle']['selectedYear'],
@@ -93,7 +90,7 @@ export class VehicleEffects {
     )
   );
 
-  @Effect() loadTrims$ = this.actions$.pipe(
+  @Effect() loadFitmentTrims = this.actions$.pipe(
     ofType(VehicleAction.ActionTypes.LOAD_TRIMS),
     withLatestFrom(this.store$.select(state => state)),
     mergeMap(([action, vehicle]) =>
@@ -108,13 +105,12 @@ export class VehicleEffects {
           value: vehicle['fitment']['vehicle']['selectedMake']}
         ],)
         .pipe(
-          map((data: any) => {
-            console.log('trim data', data);
+          map((res: any) => {
             return new VehicleAction.LoadTRIMSSuccess({
               years: null,
               models: null,
               makes: null,
-              trims: data.trim,
+              trims: res.trim,
               selectedYear: vehicle['fitment']['vehicle']['selectedYear'],
               selectedMake: vehicle['fitment']['vehicle']['selectedMake'],
               selectedModel: vehicle['fitment']['vehicle']['selectedModel']

@@ -6,13 +6,10 @@ import {
   LoadMODELS,
   LoadTRIMS,
   LoadYears,
-SelectedMake,
-SelectedYear
+  SelectedMake,
+  SelectedYear
 } from '../store/actions/vehicle.action';
-import {
-  getVehicleState,
-  VehicleState
-} from '../store/reducers/vehicle.reducer';
+import { getState, VehicleState } from '../store/reducers/vehicle.reducer';
 
 @Component({
   selector: 'app-fitment-container',
@@ -24,46 +21,36 @@ export class FitmentContainerComponent implements OnInit {
   makes$: string[];
   models$: string[];
   trims$: string[];
+  showData: boolean;
 
   // import the store into the constructor
   constructor(private store: Store<VehicleState>) {}
 
   ngOnInit() {
-    this.store.select(getVehicleState).subscribe((data: any) => {
-      console.log('on int', data);
-      if (data.vehicle) {
-        this.years$ = data.vehicle.years;
-        this.makes$ = data.vehicle.makes;
-        this.models$ = data.vehicle.models;
-        this.trims$ = data.vehicle.trims;
-      }
+    this.store.select(getState).subscribe((res: any) => {
+      this.years$ = res.vehicle.years;
+      this.makes$ = res.vehicle.makes;
+      this.models$ = res.vehicle.models;
+      this.trims$ = res.vehicle.trims;
     });
   }
 
   getYears() {
-    console.log('getYears');
+    this.showData = true;
     this.store.dispatch(new LoadYears());
-
-    // dispatch an action to get array of years
-
-    // Year
-    // https://6080be3273292b0017cdbf2a.mockapi.io/years
   }
 
   getMake(year) {
-    console.log('year', year);
     this.store.dispatch(new SelectedYear(year));
     this.store.dispatch(new LoadMAKES(year));
   }
 
   getModel(make) {
-    console.log('make', make);
-    this.store.dispatch(new SelectedMake(make))
+    this.store.dispatch(new SelectedMake(make));
     this.store.dispatch(new LoadMODELS(make));
   }
 
   getTrims(model) {
-    console.log('model', model);
     this.store.dispatch(new LoadTRIMS(model));
   }
 
