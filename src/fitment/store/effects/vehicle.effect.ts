@@ -26,7 +26,10 @@ export class VehicleEffects {
               years: data.year,
               models: null,
               makes: null,
-              trims: null
+              trims: null,
+              selectedYear: '',
+              selectedMake:'',
+              selectedModel: ''
             });
           }),
           catchError(error => of(new VehicleAction.LoadYearsFail(error)))
@@ -39,19 +42,21 @@ export class VehicleEffects {
     withLatestFrom(this.store$.select(state => state)),
     mergeMap(([action, vehicle]) =>
       this.service
-        .getData('https://6080be3273292b0017cdbf2a.mockapi.io/makes', {
+        .getData('https://6080be3273292b0017cdbf2a.mockapi.io/makes', [{
           key: 'year',
           value: action['payload']
-        })
+        }])
         .pipe(
           map((data: any) => {
-            console.log('vehicle', vehicle);
-            console.log('action', action);
             return new VehicleAction.LoadMAKESSuccess({
               years: null,
               models: null,
               makes: data.make,
-              trims: null
+              trims: null,
+              selectedYear: action['payload'],
+              selectedMake:'',
+              selectedModel: ''
+              
             });
           }),
           catchError(error => of(new VehicleAction.LoadMAKESFail(error)))
@@ -61,19 +66,26 @@ export class VehicleEffects {
 
   @Effect() loadModels$ = this.actions$.pipe(
     ofType(VehicleAction.ActionTypes.LOAD_MODELS),
-    mergeMap((action: any) =>
+    withLatestFrom(this.store$.select(state => state)),
+    mergeMap(([action, vehicle]) =>
       this.service
-        .getData('https://6080be3273292b0017cdbf2a.mockapi.io/models', {
+        .getData('https://6080be3273292b0017cdbf2a.mockapi.io/models', [{
           key: 'make',
-          value: action.payload
-        })
+          value: action['payload']
+        }, {key: 'year',
+          value: vehicle['fitment']['vehicle']['selectedYear']}])
         .pipe(
           map((data: any) => {
+            console.log('vehicle', vehicle);
+            console.log('action', action);
             return new VehicleAction.LoadMODELSSuccess({
               years: null,
               models: data.model,
               makes: null,
-              trims: null
+              trims: null,
+              selectedYear: vehicle['fitment']['vehicle']['selectedYear'],
+              selectedMake: vehicle['fitment']['vehicle']['selectedMake'],
+              selectedModel: ''
             });
           }),
           catchError(error => of(new VehicleAction.LoadMODELSFail(error)))
@@ -83,12 +95,18 @@ export class VehicleEffects {
 
   @Effect() loadTrims$ = this.actions$.pipe(
     ofType(VehicleAction.ActionTypes.LOAD_TRIMS),
-    mergeMap((action: any) =>
+    withLatestFrom(this.store$.select(state => state)),
+    mergeMap(([action, vehicle]) =>
       this.service
-        .getData('https://6080be3273292b0017cdbf2a.mockapi.io/trim', {
+        .getData('https://6080be3273292b0017cdbf2a.mockapi.io/trim', [{
           key: 'model',
-          value: action.payload
-        })
+          value: action['payload']
+        },
+        {key: 'year',
+          value: vehicle['fitment']['vehicle']['selectedYear']},
+          {key: 'make',
+          value: vehicle['fitment']['vehicle']['selectedMake']}
+        ],)
         .pipe(
           map((data: any) => {
             console.log('trim data', data);
@@ -96,7 +114,11 @@ export class VehicleEffects {
               years: null,
               models: null,
               makes: null,
-              trims: data.trim
+              trims: data.trim,
+              selectedYear: vehicle['fitment']['vehicle']['selectedYear'],
+              selectedMake: vehicle['fitment']['vehicle']['selectedMake'],
+              selectedModel: vehicle['fitment']['vehicle']['selectedModel']
+              
             });
           }),
           catchError(error => of(new VehicleAction.LoadTRIMSFail(error)))

@@ -10,7 +10,10 @@ export class FitmentService {
   getData(url: string, paramsVal: any) {
     if (paramsVal) {
       let params = new HttpParams();
-      params = params.append(paramsVal.key, paramsVal.value);
+      paramsVal.forEach(param => {
+        params = params.append(param.key, param.value);
+      })
+      console.log("params", params)
       return this.http.get(url, { params: params });
     } else {
       return this.http.get(url);

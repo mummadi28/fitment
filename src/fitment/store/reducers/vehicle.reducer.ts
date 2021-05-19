@@ -13,13 +13,19 @@ export interface VehicleState {
   makes: string[];
   models: string[];
   trims: string[];
+  selectedYear: string;
+  selectedMake: string;
+  selectedModel: string;
 }
 
 export const initialState: VehicleState = {
   years: [],
   makes: [],
   models: [],
-  trims: []
+  trims: [],
+  selectedYear: '',
+  selectedMake: '',
+  selectedModel: ''
 };
 
 export function reducer(
@@ -39,6 +45,7 @@ export function reducer(
       };
     }
     case fromVehicle.ActionTypes.LOAD_YEARS_SUCCESS: {
+      
       return {
         ...state,
         ...action.payload
@@ -56,6 +63,7 @@ export function reducer(
       };
     }
     case fromVehicle.ActionTypes.LOAD_MAKES_SUCCESS: {
+      console.log("***", action.payload, state)
       return {
         ...state,
         ...action.payload
@@ -93,6 +101,24 @@ export function reducer(
       return {
         ...state,
         ...action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.SELECTED_YEAR: {
+      return {
+        ...state,
+        selectedYear: action.payload
+      };
+    }
+    case fromVehicle.ActionTypes.SELECTED_MAKE: {
+      return {
+        ...state,
+        selectedMake: action.payload
+      };
+    }
+     case fromVehicle.ActionTypes.SELECTED_MODEL: {
+      return {
+        ...state,
+        selectedModel: action.payload
       };
     }
   }

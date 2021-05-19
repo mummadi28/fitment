@@ -27,6 +27,18 @@ export enum ActionTypes {
 }
 
 // Action creators
+export class SelectedYear implements Action {
+  readonly type = ActionTypes.SELECTED_YEAR;
+  constructor(public payload: any) {}
+}
+export class SelectedMake implements Action {
+  readonly type = ActionTypes.SELECTED_MAKE;
+  constructor(public payload: any) {}
+}
+export class SelectedModel implements Action {
+  readonly type = ActionTypes.SELECTED_MODEL;
+  constructor(public payload: any) {}
+}
 
 export class LoadYears implements Action {
   readonly type = ActionTypes.LOAD_YEARS;
@@ -91,4 +103,4 @@ export type VehicleAction =
   | LoadMODELSSuccess
   | LoadTRIMS
   | LoadTRIMSFail
-  | LoadTRIMSSuccess;
+  | LoadTRIMSSuccess | SelectedYear | SelectedMake |SelectedModel;

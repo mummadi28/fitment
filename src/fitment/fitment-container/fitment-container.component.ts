@@ -5,7 +5,9 @@ import {
   LoadMAKES,
   LoadMODELS,
   LoadTRIMS,
-  LoadYears
+  LoadYears,
+SelectedMake,
+SelectedYear
 } from '../store/actions/vehicle.action';
 import {
   getVehicleState,
@@ -50,11 +52,13 @@ export class FitmentContainerComponent implements OnInit {
 
   getMake(year) {
     console.log('year', year);
+    this.store.dispatch(new SelectedYear(year));
     this.store.dispatch(new LoadMAKES(year));
   }
 
   getModel(make) {
     console.log('make', make);
+    this.store.dispatch(new SelectedMake(make))
     this.store.dispatch(new LoadMODELS(make));
   }
 
